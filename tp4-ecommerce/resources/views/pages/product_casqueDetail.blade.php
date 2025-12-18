@@ -15,7 +15,7 @@
     <!-- Scripts -->
     <script src="{{ asset('assets/js/api-service.js') }}" defer></script>
     <script src="{{ asset('assets/js/universal-product-loader.js') }}" defer></script>
-    <script src="{{ asset('assets/js/cart-manager.js') }}" defer></script>
+    <script type="module"  src="{{ asset('assets/js/cart-manager.js') }}" defer></script>
     
     <!-- Script d'initialisation -->
     <script>
@@ -56,7 +56,7 @@
                 : `${CLOUD_URL}/${product.image}`;
             
             mainImg.src = fullImageUrl;
-            mainImg.onerror = () => { mainImg.src = '/assets/images/placeholder.jpg'; };
+            mainImg.onerror = () => { mainImg.src = '/assets/images/ca5.png'; };
         }
 
         // 3. Mise à jour des textes et prix
@@ -121,7 +121,7 @@
             'product-subtitle': product.description || '',
             'product-price': formatPrice(product.price),
             'product-old-price': product.old_price ? formatPrice(product.old_price) : '',
-            'main-image': product.image_url || product.image || '/assets/images/placeholder.jpg'
+            'main-image': product.image_url || product.image || '/assets/images/ca4.png'
         };
         
         // Mettre à jour chaque élément
@@ -426,12 +426,12 @@
             <div class="product-detail-left">
                 <div class="image-gallery-box">
                     <div class="main-product-image">
-                        <img id="main-image" src="/assets/images/placeholder.jpg" alt="Produit">
+                        <img id="main-image" src="/assets/images/ca7.png" alt="Produit">
                     </div>
                     <div class="thumbnail-row">
                         <div class="thumbnail active">
-                            <img src="/assets/images/placeholder-thumb.jpg" alt="Miniature" 
-                                 data-image="/assets/images/placeholder.jpg">
+                            <img src="/assets/images/ca6.png" alt="Miniature" 
+                                 data-image="/assets/images/ca5.png">
                         </div>
                     </div>
                 </div>

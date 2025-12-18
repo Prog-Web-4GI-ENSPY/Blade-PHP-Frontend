@@ -50,7 +50,7 @@
                     // Initialiser le chargeur de produits
                     await window.productLoader.init(category.name, gridConfig, {
                         productsPerPage: 8,
-                        defaultImage: '/assets/images/placeholder.jpg'
+                        defaultImage: '/assets/images/ca6.png'
                     });
                     
                     loaded = true;

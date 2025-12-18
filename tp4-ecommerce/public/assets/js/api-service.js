@@ -11,7 +11,7 @@ class ApiService {
      * Helper pour construire les URLs d'images complètes
      */
     getImageUrl(path) {
-        if (!path) return '/assets/images/placeholder.png';
+        if (!path) return '/assets/images/ca7.png';
         if (path.startsWith('http')) return path;
         return `${this.storageURL}${path}`;
     }
@@ -226,6 +226,36 @@ class ApiService {
 
     // ==================== AUTRES MÉTHODES ====================
     
+    /**
+     * GET Product by ID (Nouvelle méthode)
+     */
+    async getProductById(id) {
+        console.log(`🔍 Récupération produit par ID: ${id}`);
+        return await this.request(`/products/id/${id}`);
+    }
+
+    /**
+     * GET Product by Slug (SEO)
+     */
+    async getProductBySlug(slug) {
+        console.log(`🔍 Récupération produit par Slug: ${slug}`);
+        return await this.request(`/products/${slug}`);
+    }
+
+    /**
+     * GET Product - Détecte automatiquement si c'est un ID ou un Slug
+     */
+    async getProduct(identifier) {
+        if (!identifier) throw new Error("ID ou Slug manquant");
+        
+        // Si c'est un nombre, on utilise la route ID, sinon Slug
+        if (!isNaN(identifier)) {
+            return this.getProductById(identifier);
+        }
+        return this.getProductBySlug(identifier);
+    }
+
+
     async getProducts() {
         return await this.request('/products', { method: 'GET' });
     }
@@ -234,19 +264,25 @@ class ApiService {
         return await this.request('/products/featured');
     }
 
-    async getProduct(id) {
-        return await this.request(`/products/${id}`);
-    }
 
 
     // ==================== PANIER (BACKEND) ====================
 
+ 
+
+    /**
+     * Ajout au panier avec validation de la variante
+     */
     async addToCart(variantId, quantity = 1) {
+        if (!variantId) throw new Error("ID de variante invalide");
+        
+        console.log(`➕ API: Ajout au panier -> Variant: ${variantId}, Qté: ${quantity}`);
+        
         return this.request('/cart/add', {
             method: 'POST',
             body: JSON.stringify({
-                product_variant_id: variantId,
-                quantity: quantity
+                product_variant_id: parseInt(variantId),
+                quantity: parseInt(quantity)
             })
         });
     }
