@@ -391,7 +391,7 @@ async function loadSimpleCategories() {
             // Utiliser l'ID comme fallback si pas de slug
             const slug = category.slug || category.id;
             link.href = `/${slug}`;
-            link.innerHTML = `<i class="fas fa-tag"></i> ${category.name}`;
+            link.innerHTML = `<i class="fas fa-tag"></i> ${category.name === 'Électronique' ? 'Ordinateur' : category.name}`;
             link.className = 'category-link';
             
             dropdown.appendChild(link);

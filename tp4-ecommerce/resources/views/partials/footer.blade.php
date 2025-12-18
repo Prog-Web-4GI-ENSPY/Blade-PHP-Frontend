@@ -28,10 +28,8 @@
       <div class="footer-section">
         <h3>Navigation Rapide</h3>
         <ul>
-          <li><a href="#">Deals</a></li>
         <li><a href="{{ route('about') }}">About Us</a></li>
           <li><a href="{{ route('blog') }}">Blog</a></li>
-          <li><a href="#">Promotions</a></li>
         </ul>
       </div>
 
@@ -52,7 +50,13 @@
       <div class="footer-section">
         <h3>Boutique</h3>
         <div class="shop-categories">
-        
+          <ul>
+            <li><a href="{{ route('casque') }}">Casques Audio</a></li>
+            <li><a href="{{ route('cam') }}">Appareils Photo</a></li>
+            <li><a href="{{ route('ordi') }}">Ordinateurs</a></li>
+            <li><a href="{{ route('disk') }}">Disques Durs</a></li>
+            <li><a href="{{ route('manettes') }}">Manettes de Jeu</a></li>
+</ul>
         </div>
       </div>
 

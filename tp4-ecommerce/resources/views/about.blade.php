@@ -272,7 +272,7 @@
         <div class="container">
             <h2>Rejoignez des Milliers de Clients Satisfaits</h2>
             <p>Découvrez notre sélection de produits électroniques de qualité</p>
-            <a href="{{ route('catalogue') }}" class="cta-button">Voir nos Produits</a>
+            <a href="{{ route('casque') }}" class="cta-button">Voir nos Produits</a>
         </div>
     </section>
     
