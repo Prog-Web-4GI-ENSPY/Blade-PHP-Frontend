@@ -193,6 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // --- D. Gestion de la déconnexion ---
       // Si aucune donnée n'est trouvée (l'utilisateur n'est pas connecté), on peut le rediriger
       console.warn("Utilisateur non trouvé dans le LocalStorage. Redirection vers la page de connexion...");
-      window.location.href = '/login.html'; // Décommenter pour forcer la connexion
+      window.location.href = '/login'; // Décommenter pour forcer la connexion
   }
 });
