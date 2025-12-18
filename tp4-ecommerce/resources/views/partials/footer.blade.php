@@ -52,12 +52,7 @@
       <div class="footer-section">
         <h3>Boutique</h3>
         <div class="shop-categories">
-          <ul>
-            <li><a href="{{route('tel') }}">Smartphones</a></li>
-            <li><a href="{{ route('ordi') }}">Ordinateurs</a></li>
-            <li><a href="{{ route('casque') }}">Casques</a></li>
-            <li><a href="{{ route('manettes') }}">Accessoires</a></li>
-          </ul>
+        
         </div>
       </div>
 

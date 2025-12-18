@@ -17,24 +17,18 @@
       </label>
 
       <ul class="nav-links" id="navLinks">
-        <li class="categories-dropdown">
-          <!-- Label pour le sous-menu des catégories -->
-          <label for="categories-toggle" class="categories-label" id="categoriesLabel">
-            Catégories <span class="dropdown-arrow">▼</span>
-          </label>
-          <div class="dropdown-content" id="dropdownContent">
-            <a href="{{ route('ordi') }}"><i class="fas fa-laptop"></i> Ordinateurs portables</a>
-            <a href="{{ route('tel') }}"><i class="fas fa-mobile-alt"></i> Téléphones</a>
-            <a href="{{ route('casque') }}"><i class="fas fa-headphones"></i> Casques & Écouteurs</a>
-            <a href="#"><i class="fas fa-tablet-alt"></i> Tablettes</a>
-            <a href="{{ route('ordi') }}"><i class="fas fa-desktop"></i> Ordinateurs de bureau</a>
-            <a href="{{ route('disk') }}"><i class="fas fa-keyboard"></i> Périphériques</a>
-            <a href="#"><i class="fas fa-microchip"></i> Composants PC</a>
-            <a href="#"><i class="fas fa-print"></i> Imprimantes</a>
-            <a href="{{ route('manettes') }}"><i class="fas fa-gamepad"></i> Gaming</a>
-            <a href="{{ route('cam')  }}"><i class="fas fa-tv"></i> Caméras</a>
+       <li class="categories-dropdown">
+        <!-- Label pour le sous-menu des catégories -->
+        <label for="categories-toggle" class="categories-label" id="categoriesLabel">
+          Catégories <span class="dropdown-arrow">▼</span>
+        </label>
+        <div class="dropdown-content" id="dropdownContent">
+          <!-- Les catégories seront injectées ici automatiquement -->
+          <div class="loading-text">
+            <i class="fas fa-spinner fa-spin"></i> Chargement...
           </div>
-        </li>
+        </div>
+       </li>
         <li><a href="">Promotions</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
         <li><a href="{{ route('blog') }}">Blog</a></li>

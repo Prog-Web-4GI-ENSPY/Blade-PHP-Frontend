@@ -40,7 +40,7 @@
       <i class="fas fa-shopping-cart"></i>
       <h2>Votre panier est vide</h2>
       <p>Découvrez nos produits et ajoutez-en à votre panier !</p>
-      <a href="{{ route('catalogue') }}" class="btn-continue-shopping">
+      <a href="{{ route('casque') }}" class="btn-continue-shopping">
         <i class="fas fa-arrow-left"></i>
         Continuer mes achats
       </a>
@@ -104,7 +104,7 @@
           Procéder au paiement
         </button>
 
-        <a href="{{ route('catalogue') }}" class="continue-shopping-link">
+        <a href="{{ route('casque') }}" class="continue-shopping-link">
           <i class="fas fa-arrow-left"></i>
           Continuer mes achats
         </a>

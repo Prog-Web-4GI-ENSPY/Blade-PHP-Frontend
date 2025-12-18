@@ -50,6 +50,7 @@ class ApiService {
         }
     }
 
+
     handleUnauthorized() {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user');
@@ -60,6 +61,7 @@ class ApiService {
     }
 
     // ==================== MÉTHODES CATÉGORIES ====================
+    
     
     /**
      * Récupère TOUTES les catégories
@@ -352,6 +354,83 @@ class ApiService {
 
 
 }
+
+// === FONCTION SIMPLIFIÉE POUR CHARGER LES CATÉGORIES ===
+async function loadSimpleCategories() {
+    try {
+        console.log('Chargement des catégories...');
+        
+        // Vérifier si apiService existe
+        if (!window.apiService) {
+            console.log('apiService pas encore disponible');
+            return;
+        }
+        
+        // 1. Récupérer les catégories de l'API
+        const categories = await window.apiService.getAllCategories();
+        
+        // 2. Trouver l'élément dropdown
+        const dropdown = document.getElementById('dropdownContent');
+        if (!dropdown) {
+            console.log('Dropdown non trouvé');
+            return;
+        }
+        
+        // 3. Vider le contenu
+        dropdown.innerHTML = '';
+        
+        // 4. Vérifier si on a des catégories
+        if (!categories || categories.length === 0) {
+            dropdown.innerHTML = '<div style="padding:10px;color:#666;">Aucune catégorie</div>';
+            return;
+        }
+        
+        // 5. Ajouter chaque catégorie avec la MÊME ICÔNE
+        categories.forEach(category => {
+            const link = document.createElement('a');
+            // Utiliser l'ID comme fallback si pas de slug
+            const slug = category.slug || category.id;
+            link.href = `/${slug}`;
+            link.innerHTML = `<i class="fas fa-tag"></i> ${category.name}`;
+            link.className = 'category-link';
+            
+            dropdown.appendChild(link);
+        });
+        
+        console.log(`${categories.length} catégories ajoutées`);
+        
+    } catch (error) {
+        console.log('Erreur lors du chargement:', error);
+        
+        // Afficher un message simple en cas d'erreur
+        const dropdown = document.getElementById('dropdownContent');
+        if (dropdown) {
+            dropdown.innerHTML = `
+                <a href="#"><i class="fas fa-tag"></i> Ordinateurs</a>
+                <a href="#"><i class="fas fa-tag"></i> Téléphones</a>
+                <a href="#"><i class="fas fa-tag"></i> Casques</a>
+                <a href="#"><i class="fas fa-tag"></i> Gaming</a>
+            `;
+        }
+    }
+}
+
+// === LANCER AUTOMATIQUEMENT QUAND LA PAGE EST PRÊTE ===
+function initCategories() {
+    // Attendre que le DOM soit complètement chargé
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attendre 500ms pour être sûr que apiService est chargé
+            setTimeout(loadSimpleCategories, 500);
+        });
+    } else {
+        // Le DOM est déjà chargé
+        setTimeout(loadSimpleCategories, 500);
+    }
+}
+
+// Démarrer l'initialisation
+initCategories();
 
 window.handleCheckout = function() {
     console.log("🚀 Redirection vers la page de commande...");
