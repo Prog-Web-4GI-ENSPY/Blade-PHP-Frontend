@@ -189,7 +189,7 @@ class CartManager {
         }
 
         if (emptyCartMessage) emptyCartMessage.style.display = 'none';
-        if (cartContent) cartContent.style.display = 'block';
+        if (cartContent) cartContent.style.display = 'flex';
         
         // On remplit le container avec les items
         container.innerHTML = this.cart.items.map(item => this.createCartItemHTML(item)).join('');
@@ -205,51 +205,43 @@ class CartManager {
     }
 
     createCartItemHTML(item) {
-        const price = this.formatPrice(item.price);
-        const total = this.formatPrice(item.total);
-        const imageUrl = item.product?.image_url ;
-        
-        return `
-            <div class="cart-item" data-cart-item-id="${item.id}">
-                <div class="cart-item-image">
-                    <img src="${imageUrl}" alt="${item.product?.name || 'Produit'}">
-                </div>
-                
-                <div class="cart-item-details">
-                    <h3 class="cart-item-title">${item.product?.name || 'Produit'}</h3>
-                    <p class="cart-item-description">${item.product?.description?.substring(0, 100) || ''}...</p>
-                    <div class="cart-item-attributes">
-                        <span class="cart-item-brand">${item.product?.brand || 'Marque'}</span>
-                        <span class="cart-item-sku">SKU: ${item.product?.sku || 'N/A'}</span>
-                    </div>
-                </div>
-                
-                <div class="cart-item-price">
-                    <span class="price-unit">${price}</span>
-                    <span class="price-total-label">Total: ${total}</span>
-                </div>
-                
-                <div class="cart-item-quantity">
-                    <button class="quantity-btn minus" data-action="decrease">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <input type="number" class="quantity-input" value="${item.quantity}" min="1" max="99" 
-                           data-cart-item-id="${item.id}">
-                    <button class="quantity-btn plus" data-action="increase">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                
-                <div class="cart-item-actions">
-                    <button class="btn-remove-item" data-cart-item-id="${item.id}">
-                        <i class="fas fa-trash"></i>
-                        Supprimer
-                    </button>
+    // Sécurité pour les prix et noms
+    const unitPrice = item.unit_price || item.price || 0;
+    const productName = item.product?.name || 'Produit';
+    
+    // Gestion de l'image (évite le "undefined")
+    const imageUrl = item.product?.image_url || 
+                    (item.product?.image ? this.api.getImageUrl(item.product.image) : '/assets/images/placeholder.jpg');
+
+    return `
+        <div class="cart-item" data-cart-item-id="${item.id}">
+            <img src="${imageUrl}" class="item-image" alt="${productName}">
+            
+            <div class="item-details">
+                <h3 class="item-name">${productName}</h3>
+                <p class="item-brand">${item.product?.brand || 'Marque non spécifiée'}</p>
+                <div class="item-rating">
+                    <span class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </span>
+                    <span class="rating-value">4.5</span>
                 </div>
             </div>
-        `;
-    }
-
+            
+            <div class="item-actions">
+                <p class="item-price">${this.formatPrice(unitPrice * item.quantity)}</p>
+                <div class="quantity-controls">
+                    <button class="quantity-btn minus" data-action="decrease">-</button>
+                    <span class="quantity-display">${item.quantity}</span>
+                    <button class="quantity-btn plus" data-action="increase">+</button>
+                </div>
+                <button class="remove-btn btn-remove-item" data-cart-item-id="${item.id}">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    `;
+}
     updateSummary() {
         const subtotalElement = document.getElementById('subtotal-value');
         const discountElement = document.getElementById('discount-value');
@@ -279,56 +271,38 @@ class CartManager {
         }
     }
 
-    bindCartItemEvents() {
-        // Boutons de quantité
-        document.querySelectorAll('.quantity-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const action = e.target.closest('.quantity-btn').dataset.action;
-                const input = e.target.closest('.cart-item-quantity').querySelector('.quantity-input');
-                const cartItemId = input.dataset.cartItemId;
-                let quantity = parseInt(input.value);
-                
-                if (action === 'increase') {
-                    quantity++;
-                } else if (action === 'decrease' && quantity > 1) {
-                    quantity--;
-                }
-                
-                await this.updateQuantity(cartItemId, quantity);
-            });
-        });
-        
-        // Input de quantité
-        document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('change', async (e) => {
-                const cartItemId = e.target.dataset.cartItemId;
-                const quantity = parseInt(e.target.value);
-                
-                if (quantity >= 1 && quantity <= 99) {
-                    await this.updateQuantity(cartItemId, quantity);
-                } else {
-                    e.target.value = 1;
-                }
-            });
-        });
-        
-        // Boutons de suppression
-        document.querySelectorAll('.btn-remove-item').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const cartItemId = e.target.closest('.btn-remove-item').dataset.cartItemId;
-                await this.removeItem(cartItemId);
-            });
-        });
-    }
+bindCartItemEvents() {
+    // Boutons de quantité (Plus / Moins)
+document.querySelectorAll('.quantity-btn').forEach(btn => {
+    btn.onclick = async (e) => {
+        const action = e.currentTarget.classList.contains('plus') ? 'increase' : 'decrease';
+        const cartItem = e.currentTarget.closest('.cart-item');
+        const cartItemId = cartItem.dataset.cartItemId;
+        const display = cartItem.querySelector('.quantity-display');
+        let quantity = parseInt(display.textContent);
 
-    formatPrice(amount) {
-        if (!amount && amount !== 0) return 'XAF0.00';
-        return new Intl.NumberFormat('fr-FR', {
-            style: 'currency',
-            currency: 'XOF',
-            minimumFractionDigits: 0
-        }).format(amount);
-    }
+        if (action === 'increase') quantity++;
+        else if (action === 'decrease' && quantity > 1) quantity--;
+
+        await this.updateQuantity(cartItemId, quantity);
+    };
+});
+    
+    // Boutons de suppression
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.onclick = async (e) => {
+            const cartItemId = e.currentTarget.closest('.cart-item').dataset.cartItemId;
+            if(confirm('Supprimer cet article ?')) {
+                await this.removeItem(cartItemId);
+            }
+        };
+    });
+}
+
+   formatPrice(amount) {
+    if (!amount && amount !== 0) return '0 F CFA';
+    return new Intl.NumberFormat('fr-FR').format(amount) + ' F CFA';
+}
 
     showNotification(message, type = 'info') {
         // Créer le style si nécessaire
