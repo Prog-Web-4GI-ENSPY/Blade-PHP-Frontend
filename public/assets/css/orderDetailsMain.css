@@ -1,0 +1,221 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+main{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 2rem;
+    width: 50%;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-inline: auto;
+    
+}
+.section_list{
+    
+    display:  flex;
+    gap:10px;
+    font-size: 0.8rem;
+    margin-top: 6rem;
+   align-items: center;
+}
+.section_list img{
+    height: 15px;
+    color: #1e40af;
+}
+.Order_Details{
+    color:#1e40af;
+    font-weight: bold;
+
+}
+.personal_info{
+    display:  flex;
+    flex-direction: column;
+    gap:1rem;
+    border-bottom: 2px solid #1e40af ;
+    width: 100%;
+    padding: 1rem;
+    
+  
+}
+h1{
+    font-size: 1.5rem;
+    color: #1e40af;
+
+}
+.person_fields{
+    display:  grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-template-rows: 1fr 1fr;
+    gap: 1rem;
+
+}
+.info{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+}
+.description{
+    font-size: 0.9rem;
+}
+.important{
+    color:red;
+}
+input{
+    height: 30px;
+    padding: 1rem;;
+    border:1px solid #1e40af;
+    border-radius: 5px;
+}
+.phone_field{
+    display: flex;
+    gap: 0.25rem;
+}
+.phone_field select{
+    background-color: #1e40afd7;
+    color:white;
+    border:none;
+    border-radius: 5px;
+}
+.phone_field option{
+    background-color: white;
+    color: #1e40af;
+    border: none;
+}
+.Delivery_info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap:2rem;
+    border-bottom: 2px solid #1e40af ;
+    width: 100%;
+    padding: 1rem;
+   
+}
+.DeliveryOptions{
+    display:  flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.delivery_option{
+    display: flex;
+    flex-direction: row;
+    gap: 0.25rem;
+    font-size: .9rem;
+    align-items: center;
+
+}
+.delivery_options{
+    display:  flex ;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.address{
+    display:  flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-bottom: 2px solid #1e40af ;
+    width: 100%;
+    padding: 1rem;
+    
+}
+.fields{
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+}
+.Payment_Info{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-bottom: 2px solid #1e40af ;
+    width: 100%;
+    padding: 1rem;
+   
+
+}
+.review{
+    background-color: #1e40af;
+    padding: 1rem;
+    color:white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 3px #7a84a7;
+    border:none;
+    width: 200px;
+
+}
+
+.payment_methods{
+display:  flex;
+flex-direction: column;
+gap: 1rem;
+}
+.payment_methods img{
+    height: 80px;
+    border-radius: 10%;
+}
+.payment_method{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+.cards{
+    display: flex;
+    gap: .5rem;
+}
+.review:hover{
+    cursor: pointer;
+
+}
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+.field{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap:.5rem;
+    padding: .5rem;
+}
+.Number_payment{
+     display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap:.5rem;
+    padding: 1rem;
+    
+}
+#cardType{
+    padding: .5rem;
+    border-radius: 5px;
+    background-color: #1e40afb9;
+    color:white;
+    width: 200px;
+    
+}
+.Card_payment{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+  
+}
+.disappear{
+    display: none;
+}

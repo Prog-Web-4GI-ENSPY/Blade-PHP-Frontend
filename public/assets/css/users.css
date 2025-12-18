@@ -1,0 +1,499 @@
+/* Styles spécifiques à la page utilisateurs */
+
+/* En-tête utilisateurs */
+.users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xl);
+    gap: var(--spacing-lg);
+}
+
+.users-title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+}
+
+.users-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.users-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+/* Barre d'outils utilisateurs */
+.users-toolbar {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    border: var(--border-width) solid var(--color-border);
+}
+
+.toolbar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+/* Barre de recherche */
+.toolbar-search {
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: var(--spacing-md);
+    width: 16px;
+    height: 16px;
+    color: var(--color-text-muted);
+    z-index: 1;
+}
+
+.search-input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) calc(var(--spacing-md) + 20px);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/* Filtres */
+.toolbar-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Actions en masse */
+.bulk-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-primary-light);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    animation: slideDown 0.2s ease;
+}
+
+.bulk-actions.hidden {
+    display: none;
+}
+
+.bulk-actions-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-primary-dark);
+    font-weight: 500;
+}
+
+.bulk-actions-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Conteneur tableau */
+.users-table-container {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: var(--border-width) solid var(--color-border);
+    overflow: hidden;
+}
+
+.users-table {
+    width: 100%;
+    font-size: var(--font-size-sm);
+    border-collapse: collapse;
+}
+
+.users-table th {
+    background: var(--color-gray-50);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text);
+    border-bottom: var(--border-width) solid var(--color-border);
+    white-space: nowrap;
+}
+
+.users-table td {
+    padding: var(--spacing-md);
+    border-bottom: var(--border-width) solid var(--color-border);
+    vertical-align: middle;
+}
+
+.users-table tr:last-child td {
+    border-bottom: none;
+}
+
+.users-table tr:hover {
+    background: var(--color-gray-50);
+}
+
+/* Cases à cocher */
+.user-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: var(--radius-sm);
+    border: var(--border-width) solid var(--color-border);
+    background: var(--color-white);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.user-checkbox:checked {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.user-checkbox:indeterminate {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+/* Cellule d'information utilisateur */
+.user-info-cell {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.user-avatar-small {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--color-white);
+    flex-shrink: 0;
+}
+
+.user-avatar-small.primary {
+    background: var(--color-primary);
+}
+
+.user-avatar-small.secondary {
+    background: var(--color-secondary);
+}
+
+.user-avatar-small.accent {
+    background: var(--color-accent);
+}
+
+.user-avatar-small.warning {
+    background: var(--color-warning);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.user-email {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+/* Badges de rôle */
+.role-badge {
+    padding: 4px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.role-admin {
+    background: var(--color-primary-ultralight);
+    color: var(--color-primary-dark);
+    border: 1px solid var(--color-primary-light);
+}
+
+.role-moderator {
+    background: var(--color-secondary-ultralight);
+    color: var(--color-secondary-dark);
+    border: 1px solid var(--color-secondary-light);
+}
+
+.role-user {
+    background: var(--color-accent-ultralight);
+    color: var(--color-accent-dark);
+    border: 1px solid var(--color-accent-light);
+}
+
+.role-customer {
+    background: var(--color-gray-100);
+    color: var(--color-gray-700);
+    border: 1px solid var(--color-gray-300);
+}
+
+/* Badges de statut */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.success {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.status-badge.warning {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+}
+
+.status-badge.error {
+    background: var(--color-error-bg);
+    color: var(--color-error);
+}
+
+/* Date utilisateur */
+.user-date {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+}
+
+/* Actions utilisateur */
+.user-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    background-color: #00CC66;
+    background: #FFFFFF;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid #E8EAED;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);;
+    transition: all var(--transition-normal);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    transition: all var(--transition-fast);
+}
+
+.action-btn:hover {
+    background: var(--color-gray-100);
+}
+
+.action-btn-edit:hover {
+    color: var(--color-primary);
+}
+
+.action-btn-delete:hover {
+    color: var(--color-error);
+}
+
+.action-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Pied de tableau */
+.table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    border-top: var(--border-width) solid var(--color-border);
+    background: var(--color-gray-50);
+}
+
+.table-info {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    border: var(--border-width) solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.pagination-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.pagination-btn:disabled {
+    background: var(--color-gray-100);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+.pagination-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .users-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    
+    .users-actions {
+        justify-content: stretch;
+    }
+    
+    .users-actions .btn {
+        flex: 1;
+        min-width: auto;
+        background-color: #00CC66;
+    }
+    
+    .toolbar-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    
+    .toolbar-search {
+        max-width: none;
+    }
+    
+    .toolbar-filters {
+        justify-content: space-between;
+    }
+    
+    .filter-group {
+        flex-wrap: wrap;
+    }
+    
+    .users-table {
+        font-size: var(--font-size-xs);
+    }
+    
+    .users-table th,
+    .users-table td {
+        padding: var(--spacing-sm);
+    }
+    
+    .user-info-cell {
+        gap: var(--spacing-sm);
+    }
+    
+    .user-avatar-small {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-xs);
+    }
+    
+    .table-footer {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+    }
+    
+    .pagination {
+        justify-content: center;
+    }
+    
+    .bulk-actions {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+    }
+    
+    .bulk-actions-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .users-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .role-badge,
+    .status-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+}
