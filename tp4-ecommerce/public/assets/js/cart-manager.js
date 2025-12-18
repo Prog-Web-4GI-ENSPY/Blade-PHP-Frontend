@@ -17,6 +17,9 @@ class CartManager {
         console.log('🛒 Initialisation du CartManager...');
         this.bindEvents();
         await this.loadCart();
+
+        // Sécurité supplémentaire : on force l'affichage après le chargement
+    this.updateUI();
     }
 
     bindEvents() {
