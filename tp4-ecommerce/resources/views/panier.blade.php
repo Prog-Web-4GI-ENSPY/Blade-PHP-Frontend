@@ -27,7 +27,7 @@
         Mon Panier
       </h1>
       <p class="cart-item-count">
-        <span id="total-items">0</span> article(s) dans votre panier
+        <span id="total-items"></span> article(s) dans votre panier
       </p>
     </div>
 
@@ -125,7 +125,7 @@
   </main>
 
   <script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
-  <script src="{{ asset('assets/js/header.js') }}"></script>
+<script type="module" src="{{ asset('assets/js/cart-manager.js') }}"></script>
   <script src="{{ asset('assets/js/panier.js') }}"></script> 
 </body>
 @endsection

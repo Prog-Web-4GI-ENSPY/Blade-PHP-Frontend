@@ -327,6 +327,9 @@ class ApiService {
             localStorage.setItem('auth_token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
         }
+        // Après un login réussi ou un ajout au panier
+        if (window.updateUserButtons) window.updateUserButtons();
+        if (window.updateCartBadge) window.updateCartBadge();
         
         return data;
     }

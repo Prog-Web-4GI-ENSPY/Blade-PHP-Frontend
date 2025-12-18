@@ -53,7 +53,7 @@ class CartManager {
             discount: data.discount || 0,
             shipping: data.shipping || 0,
             total: data.total || 0,
-            itemCount: data.item_count || 0
+            itemCount:data.items_count|| (data.items ? data.items.length : 0)
         };
         
         console.log('🛒 Panier mis à jour:', {
@@ -149,12 +149,20 @@ class CartManager {
     }
 
     updateCartBadge() {
-        const cartBadges = document.querySelectorAll('.cart-badge, .cart-item-count-badge');
-        cartBadges.forEach(badge => {
-            badge.textContent = this.cart.itemCount;
-            badge.style.display = this.cart.itemCount > 0 ? 'flex' : 'none';
-        });
-    }
+       // Cible la classe .cart-count utilisée dans votre header.blade.php
+       const badges = document.querySelectorAll('.cart-count');
+       badges.forEach(badge => {
+           badge.textContent = this.cart.itemCount;
+           // On s'assure que le badge est visible s'il y a des articles
+           badge.style.setProperty('display', this.cart.itemCount > 0 ? 'flex' : 'none', 'important');
+       });
+
+       // Cible l'ID total-items utilisé dans votre panier.blade.php
+       const totalItemsElement = document.getElementById('total-items');
+       if (totalItemsElement) {
+           totalItemsElement.textContent = this.cart.itemCount;
+       }
+   }
 
     renderCartPage() {
         const container = document.getElementById('cart-items-container');
@@ -169,37 +177,34 @@ class CartManager {
             loadingIndicator.style.display = 'none';
         }
         
-        // Vérifier si le panier est vide
         if (this.cart.items.length === 0) {
             if (emptyCartMessage) emptyCartMessage.style.display = 'flex';
             if (cartContent) cartContent.style.display = 'none';
-            
-            // Mettre à jour le compteur
-            document.getElementById('total-items').textContent = '0';
+            const totalText = document.getElementById('total-items');
+            if (totalText) totalText.textContent = '0';
             return;
         }
-        
-        // Afficher le contenu du panier
+
         if (emptyCartMessage) emptyCartMessage.style.display = 'none';
         if (cartContent) cartContent.style.display = 'block';
         
-        // Mettre à jour le compteur
-        document.getElementById('total-items').textContent = this.cart.itemCount;
-        
-        // Rendre les articles
+        // On remplit le container avec les items
         container.innerHTML = this.cart.items.map(item => this.createCartItemHTML(item)).join('');
         
-        // Mettre à jour le résumé
         this.updateSummary();
-        
-        // Ajouter les événements
         this.bindCartItemEvents();
+        
+        // Gestion du bouton vider
+        const clearBtn = document.getElementById('clear-cart-button');
+        if (clearBtn) {
+            clearBtn.onclick = () => this.clearCart();
+        }
     }
 
     createCartItemHTML(item) {
         const price = this.formatPrice(item.price);
         const total = this.formatPrice(item.total);
-        const imageUrl = item.product?.image_url || '/assets/images/placeholder.jpg';
+        const imageUrl = item.product?.image_url ;
         
         return `
             <div class="cart-item" data-cart-item-id="${item.id}">

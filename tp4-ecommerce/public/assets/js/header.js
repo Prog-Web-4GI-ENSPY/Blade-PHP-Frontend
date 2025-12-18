@@ -1,6 +1,3 @@
-window.USER_STORAGE_KEY = window.USER_STORAGE_KEY || 'shopcart_user_data';
-window.CART_STORAGE_KEY = window.CART_STORAGE_KEY || 'shopcart_cart';
-
 // Initialise CartData globalement s'il n'existe pas
 if (typeof window.CartData === 'undefined') {
     window.CartData = { cart_items: [], total: 0 };
@@ -149,31 +146,27 @@ function updateUserButtons() {
   if (!accountButton || !loginButton) return;
 
   try {
-    const user = localStorage.getItem(USER_STORAGE_KEY);
+    // On vérifie le token ET l'objet user pour être sûr
+  const token = localStorage.getItem('auth_token');
+  const user = localStorage.getItem('user');
     
-    if (user && user !== 'null' && user !== 'undefined') {
-      // Utilisateur connecté
-      accountButton.style.display = 'flex';
-      loginButton.style.display = 'none';
-      
-      // Optionnel: Afficher le nom d'utilisateur
-      try {
-        const userData = JSON.parse(user);
-        if (userData.username) {
-          const accountText = accountButton.querySelector('span');
-          if (accountText) {
-            accountText.textContent = userData.username;
-          }
-        }
-      } catch (e) {
-        console.log('Données utilisateur non JSON');
+  if (token && user && user !== 'undefined' && user !== 'null') {
+    accountButton.style.display = 'flex';
+    loginButton.style.display = 'none';
+    
+    try {
+      const userData = JSON.parse(user);
+      const accountText = accountButton.querySelector('span');
+      if (accountText) {
+        // Affiche "Mon Compte" ou le nom s'il existe
+        accountText.textContent = 'Mon Compte';
       }
-    } else {
-      // Utilisateur non connecté
-      accountButton.style.display = 'none';
-      loginButton.style.display = 'flex';
-    }
-  } catch (error) {
+    } catch (e) { console.error("Erreur parse user", e); }
+  } else {
+    accountButton.style.display = 'none';
+    loginButton.style.display = 'flex';
+  }
+} catch (error) {
     console.error('Erreur lors de la mise à jour des boutons utilisateur:', error);
     // Par défaut, afficher le bouton de connexion
     accountButton.style.display = 'none';
@@ -184,26 +177,24 @@ function updateUserButtons() {
 /**
  * Met à jour le badge du panier dans le header
  */
-function updateCartBadge() {
-  // Charger les données du panier pour compter le nombre d'éléments
-  loadCartData();
-  
+async function updateCartBadge() {
   const cartBadge = document.querySelector('.cart-count');
-  
-  if (!cartBadge) {
-    console.warn('⚠️ Badge du panier introuvable');
-    return;
+  if (!cartBadge) return;
+
+  // Attendre que le cartManager soit prêt
+  if (window.cartManager) {
+    const cart = window.cartManager.getCart(); // On prend les données déjà chargées
+    const count = cart.itemCount || 0;
+    
+    cartBadge.textContent = count;
+    cartBadge.style.display = count > 0 ? 'flex' : 'none';
+  } else {
+    // Fallback : lire le localStorage si le manager n'est pas encore là
+    const savedCart = JSON.parse(localStorage.getItem('shopcart_cart') || '{"itemCount":0}');
+    const count = savedCart.itemCount || 0;
+    cartBadge.textContent = count;
+    cartBadge.style.display = count > 0 ? 'flex' : 'none';
   }
-  
-  if (!CartData || !CartData.cart_items || CartData.cart_items.length === 0) {
-    cartBadge.textContent = '0';
-    cartBadge.style.display = 'none'; // Cacher si vide
-    return;
-  }
-  
-  const totalItems = CartData.cart_items.reduce((sum, item) => sum + (item.quantite || 0), 0);
-  cartBadge.textContent = totalItems > 99 ? '99+' : totalItems.toString();
-  cartBadge.style.display = 'flex'; // Afficher s'il y a des articles
 }
 
 /**
