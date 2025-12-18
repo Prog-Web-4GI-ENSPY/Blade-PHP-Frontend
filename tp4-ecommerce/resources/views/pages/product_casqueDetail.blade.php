@@ -27,6 +27,8 @@
         // Récupérer l'ID du produit depuis l'URL
         const pathParts = window.location.pathname.split('/');
         const productId = pathParts[pathParts.length - 1];
+        // Variable globale pour stocker les variantes du produit actuel
+        let productVariants = [];
         
         console.log('🆔 ID Produit:', productId);
         
@@ -87,6 +89,88 @@
 });
 
 
+
+async function loadProductDetails(productId) {
+    try {
+        const response = await window.apiService.getProduct(productId);
+        if (!response || !response.data) throw new Error('Données non disponibles');
+        
+        const product = response.data;
+        productVariants = product.variants || []; // On stocke les variantes
+
+        // Mise à jour classique des éléments
+        updateProductElements(product);
+        
+        // Injection des variantes
+        renderVariants(productVariants, product);
+
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        showError('Impossible de charger le produit');
+    }
+}
+
+function renderVariants(variants, product) {
+    const container = document.getElementById('variants-container');
+    const selectedText = document.getElementById('selected-variant-name');
+    
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (variants.length === 0) {
+        container.innerHTML = '<p>Aucune variante disponible</p>';
+        return;
+    }
+
+    variants.forEach((variant, index) => {
+        const option = document.createElement('div');
+        option.className = 'color-option' + (index === 0 ? ' active' : '');
+        
+        // On essaye de récupérer une couleur depuis le nom de la variante (ex: "Rouge")
+        // Sinon on met une couleur par défaut
+        option.style.backgroundColor = variant.color_code || '#ddd'; 
+        option.title = variant.name;
+        
+        option.addEventListener('click', () => {
+            // UI : Activer la pastille
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            
+            // Mettre à jour les infos du produit en fonction de la variante
+            selectVariant(variant);
+        });
+
+        container.appendChild(option);
+    });
+
+    // Sélectionner la première variante par défaut
+    selectVariant(variants[0]);
+}
+
+function selectVariant(variant) {
+    // 1. Mettre à jour le prix
+    const priceEl = document.getElementById('product-price');
+    if (priceEl) priceEl.textContent = formatPrice(variant.price);
+
+    // 2. Mettre à jour le texte de sélection
+    const selectedText = document.getElementById('selected-variant-name');
+    if (selectedText) selectedText.textContent = variant.name;
+
+    // 3. Mettre à jour l'image si la variante en possède une
+    if (variant.image) {
+        const mainImg = document.getElementById('main-image');
+        mainImg.src = window.apiService.getImageUrl(variant.image);
+    }
+
+    // 4. Mettre à jour le stock
+    updateStockStatus(variant.stock);
+
+    // 5. Mettre à jour l'ID pour le panier (Crucial pour éviter l'erreur 422)
+    const addBtn = document.getElementById('btn-add-to-cart');
+    const buyBtn = document.getElementById('btn-buy-now');
+    if (addBtn) addBtn.dataset.variantId = variant.id;
+    if (buyBtn) buyBtn.dataset.variantId = variant.id;
+}
     // Fonction pour charger les détails du produit
     async function loadProductDetails(productId) {
         console.log(`📦 Chargement des détails pour produit ${productId}...`);
@@ -228,33 +312,38 @@
         }
         
         // 2. Bouton "Ajouter au panier"
-        const addBtn = document.getElementById('btn-add-to-cart');
-        if (addBtn) {
-            addBtn.addEventListener('click', async function() {
-                const quantity = parseInt(document.querySelector('.quantity-display').textContent) || 1;
-                
-                if (window.cartManager) {
-                    try {
-                        // Animation du bouton
-                        const originalHTML = addBtn.innerHTML;
-                        addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ajout...';
-                        addBtn.disabled = true;
-                        
-                        await window.cartManager.addToCart(productId, quantity);
-                        
-                        // Réinitialiser le bouton
-                        setTimeout(() => {
-                            addBtn.innerHTML = originalHTML;
-                            addBtn.disabled = false;
-                        }, 1000);
-                        
-                    } catch (error) {
-                        console.error('❌ Erreur ajout panier:', error);
-                        alert('Erreur: ' + error.message);
-                    }
-                }
-            });
+        // Dans votre fonction initProductInteractions :
+const addBtn = document.getElementById('btn-add-to-cart');
+if (addBtn) {
+    addBtn.addEventListener('click', async function() {
+        // On récupère l'ID de la variante sélectionnée stocké dans le dataset
+        const variantId = addBtn.dataset.variantId;
+        const quantity = parseInt(document.querySelector('.quantity-display').textContent) || 1;
+        
+        if (!variantId) {
+            alert("Veuillez sélectionner une variante");
+            return;
         }
+
+        try {
+            addBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            addBtn.disabled = true;
+            
+            // Appel au cartManager avec l'ID de la variante
+            await window.cartManager.addToCart(variantId, quantity);
+            
+            addBtn.innerHTML = '<i class="fas fa-check"></i> Ajouté';
+            setTimeout(() => {
+                addBtn.innerHTML = '<i class="fas fa-shopping-cart icon-margin"></i> Ajouter au panier';
+                addBtn.disabled = false;
+            }, 2000);
+            
+        } catch (error) {
+            alert('Erreur: ' + error.message);
+            addBtn.disabled = false;
+        }
+    });
+}
         
         // 3. Bouton "Acheter maintenant"
         const buyBtn = document.getElementById('btn-buy-now');
@@ -470,15 +559,11 @@
                     </div>
 
                     <div class="color-selection-area">
-                        <h3 class="color-selection-title">Choisissez une couleur</h3>
-                        <div class="color-options-row">
-                            <div class="color-option active" style="background-color: #E91E63;" data-color="Rose"></div>
-                            <div class="color-option" style="background-color: #4FC3F7;" data-color="Bleu"></div>
-                            <div class="color-option" style="background-color: #4CAF50;" data-color="Vert"></div>
-                            <div class="color-option" style="background-color: #8BC34A;" data-color="Vert clair"></div>
+                            <h3 class="color-selection-title">Variantes disponibles</h3>
+                            <div class="color-options-row" id="variants-container">
+                                </div>
+                            <span class="selected-color-text">Sélection : <span id="selected-variant-name">Choisissez une option</span></span>
                         </div>
-                        <span class="selected-color-text">Couleur sélectionnée: <span id="selected-color">Rose</span></span>
-                    </div>
 
                     <div class="quantity-cart-area">
                         <div class="quantity-control">
