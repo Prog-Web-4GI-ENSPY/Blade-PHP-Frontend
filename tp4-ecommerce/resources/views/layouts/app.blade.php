@@ -30,7 +30,7 @@
     <script src="{{ asset('assets/js/header.js') }}"></script>
     <script defer src="{{ asset('assets/js/logout.js') }}"></script>
     <script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
-    <script defer src="{{ asset('assets/js/Blog.js') }}"></script>
+    <script defer src="{{ asset('assets/js/blog.js') }}"></script>
 
     @stack('scripts')
 
