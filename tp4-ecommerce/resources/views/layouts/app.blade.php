@@ -26,7 +26,6 @@
     @include('partials.footer')
 
     <script src="{{ asset('assets/js/api-service.js') }}"></script>
-     <script type="module" src="{{ asset('assets/js/universal-product-loader.js') }}" defer></script>
     <script src="{{ asset('assets/js/header.js') }}"></script>
     <script defer src="{{ asset('assets/js/logout.js') }}"></script>
     <script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
