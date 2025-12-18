@@ -20,6 +20,8 @@
     <!-- Script d'initialisation -->
     <script>
     document.addEventListener('DOMContentLoaded', async function() {
+
+        const CLOUD_URL = "https://shopecart-web-project-tp-4-laravel-full-pyh9fx.laravel.cloud";
         console.log('🚀 Initialisation de la page détail produit...');
         
         // Récupérer l'ID du produit depuis l'URL
@@ -36,23 +38,55 @@
         // Attendre que les services soient prêts
         await waitForService('apiService');
         await waitForService('cartManager');
-        
-        try {
-            // 1. Charger les détails du produit
-            await loadProductDetails(productId);
-            
-            // 2. Charger les recommandations
-            await loadRecommendations();
-            
-            // 3. Initialiser les interactions
-            initProductInteractions(productId);
-            
-        } catch (error) {
-            console.error('❌ Erreur initialisation:', error);
-            showError('Impossible de charger le produit');
-        }
-    });
     
+    
+    try {
+        // 1. Charger les détails
+        const response = await window.apiService.getProduct(productId);
+        if (!response || !response.data) throw new Error('Produit non trouvé');
+        
+        const product = response.data;
+        
+        // 2. Gestion intelligente de l'image (Fix 404)
+        const mainImg = document.getElementById('main-image');
+        if (mainImg) {
+            // Si l'image ne commence pas par http, on prefixe avec l'URL du cloud
+            const fullImageUrl = (product.image && product.image.startsWith('http')) 
+                ? product.image 
+                : `${CLOUD_URL}/${product.image}`;
+            
+            mainImg.src = fullImageUrl;
+            mainImg.onerror = () => { mainImg.src = '/assets/images/placeholder.jpg'; };
+        }
+
+        // 3. Mise à jour des textes et prix
+        document.getElementById('product-title').textContent = product.name;
+        document.getElementById('product-subtitle').textContent = product.description || '';
+        document.getElementById('product-price').textContent = formatPrice(product.price);
+        
+        // 4. FIX 422: Stocker l'ID de la VARIANTE
+        const addToCartBtn = document.getElementById('btn-add-to-cart');
+        const buyNowBtn = document.getElementById('btn-buy-now');
+        
+        // On prend la première variante ou le produit lui-même (si le backend est flexible)
+        const variantId = (product.variants && product.variants.length > 0) 
+            ? product.variants[0].id 
+            : product.id;
+
+        if (addToCartBtn) addToCartBtn.dataset.variantId = variantId;
+        if (buyNowBtn) buyNowBtn.dataset.variantId = variantId;
+
+        updateStockStatus(product.stock || 0);
+        await loadRecommendations();
+        initProductInteractions(variantId); // On passe le variantId ici
+
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        showError('Impossible de charger le produit. Vérifiez votre connexion API.');
+    }
+});
+
+
     // Fonction pour charger les détails du produit
     async function loadProductDetails(productId) {
         console.log(`📦 Chargement des détails pour produit ${productId}...`);
@@ -164,6 +198,7 @@
             console.error('❌ Erreur chargement recommandations:', error);
         }
     }
+    
     
     // Fonction pour initialiser les interactions
     function initProductInteractions(productId) {

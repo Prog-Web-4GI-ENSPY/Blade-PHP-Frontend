@@ -238,10 +238,16 @@ class ApiService {
         return await this.request(`/products/${id}`);
     }
 
-    async addToCart(productId, quantity = 1) {
-        return await this.request(`/cart/add/${productId}`, {
+
+    // ==================== PANIER (BACKEND) ====================
+
+    async addToCart(variantId, quantity = 1) {
+        return this.request('/cart/add', {
             method: 'POST',
-            body: JSON.stringify({ quantity })
+            body: JSON.stringify({
+                product_variant_id: variantId,
+                quantity: quantity
+            })
         });
     }
 
@@ -303,29 +309,6 @@ class ApiService {
 
     async getCurrentUser() {
         return await this.request('/user');
-    }
-
-    // ==================== PANIER (BACKEND) ====================
-    async getCart() {
-        return await this.request('/cart');
-    }
-
-    async addToCart(productId, quantity = 1) {
-        return await this.request('/cart/add', {
-            method: 'POST',
-            body: JSON.stringify({ product_id: productId, quantity })
-        });
-    }
-
-    async updateCartItem(itemId, quantity) {
-        return await this.request(`/cart/update/${itemId}`, {
-            method: 'PUT',
-            body: JSON.stringify({ quantity })
-        });
-    }
-
-    async removeCartItem(itemId) {
-        return await this.request(`/cart/remove/${itemId}`, { method: 'DELETE' });
     }
 
 

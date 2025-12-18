@@ -13,9 +13,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/footer.css') }}">
     
     <!-- Scripts -->
-    <script src="{{ asset('assets/js/api-service.js') }}" defer></script>
-    <script src="{{ asset('assets/js/universal-product-loader.js') }}" defer></script>
-    <script src="{{ asset('assets/js/cart-manager.js') }}" defer></script>
+    <script type="module" src="{{ asset('assets/js/universal-product-loader.js') }}" defer></script>
+
     
     <!-- Script d'initialisation -->
      <script>

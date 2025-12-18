@@ -28,7 +28,6 @@
     <script src="{{ asset('assets/js/api-service.js') }}"></script>
     
     <script src="{{ asset('assets/js/header.js') }}"></script>
-    
     <script defer src="{{ asset('assets/js/logout.js') }}"></script>
     <script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
     <script defer src="{{ asset('assets/js/Blog.js') }}"></script>

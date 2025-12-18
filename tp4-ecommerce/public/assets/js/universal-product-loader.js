@@ -336,6 +336,10 @@ createProductCard(product) {
     const imageUrl = product.image_url || product.image || this.config.defaultImage;
     const productUrl = `/products/${product.id}`; // URL du détail
 
+    const variantId = (product.variants && product.variants.length > 0) 
+        ? product.variants[0].id 
+        : null;
+
     // Déterminer le tag
     let tagHtml = '';
     if (discount > 0) {
@@ -372,7 +376,7 @@ createProductCard(product) {
                     ${oldPrice ? `<span class="old-price">${oldPrice}</span>` : ''}
                     <span class="product-price">${price}</span>
                 </div>
-                <button class="add-to-cart-btn" data-product-id="${product.id}" 
+                <button class="add-to-cart-btn"data-variant-id="${variantId || ''}"
                         ${!inStock ? 'disabled' : ''}
                         title="${!inStock ? 'Rupture de stock' : 'Ajouter au panier'}">
                     <i class="fas fa-shopping-cart"></i>
@@ -421,14 +425,15 @@ createProductCard(product) {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const productId = addToCartBtn.dataset.productId;
+                const variantId = addToCartBtn.dataset.variantId;
                 
                 // Animation visuelle
                 addToCartBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 addToCartBtn.disabled = true;
                 
                 try {
-                    await this.addToCart(productId);
+
+                    await this.addToCart(variantId);
                     
                     // Animation de succès
                     addToCartBtn.innerHTML = '<i class="fas fa-check"></i>';
@@ -537,6 +542,13 @@ createProductCard(product) {
      * Actions
      */
    async addToCart(productId) {
+    console.log("🚀 Tentative d'ajout au panier. Variant ID:", productId);
+
+    if (!productId) {
+        this.showNotification("ID de variante manquant !", "error");
+        return;
+    }
+
     try {
         if (window.cartManager) {
             await window.cartManager.addToCart(productId, 1);
@@ -546,7 +558,8 @@ createProductCard(product) {
             this.showNotification('Produit ajouté au panier', 'success');
         }
     } catch (error) {
-        this.showNotification('Erreur: ' + error.message, 'error');
+        console.error("Détail de l'erreur Fetch:", error);
+        this.showNotification('Erreur réseau ou sécurité (CORS)', 'error');
     }
 }
 
