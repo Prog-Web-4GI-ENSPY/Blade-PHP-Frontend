@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/footer.css') }}">
     
     <!-- Scripts -->
-    <script src="{{ asset('assets/js/api-service.js') }}" defer></script>
     <script src="{{ asset('assets/js/universal-product-loader.js') }}" defer></script>
     <script type="module"  src="{{ asset('assets/js/cart-manager.js') }}" defer></script>
     
@@ -463,7 +462,7 @@ if (addBtn) {
                     <i class="fas fa-exclamation-triangle fa-3x" style="color: #dc2626;"></i>
                     <h2>Erreur</h2>
                     <p>${message}</p>
-                    <a href="{{ route('catalogue') }}" class="btn-continue-shopping" style="margin-top: 20px;">
+                    <a href="{{ route('casque') }}" class="btn-continue-shopping" style="margin-top: 20px;">
                         <i class="fas fa-arrow-left"></i>
                         Retour au catalogue
                     </a>
