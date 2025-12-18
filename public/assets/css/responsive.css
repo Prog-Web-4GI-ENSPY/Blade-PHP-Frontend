@@ -1,0 +1,209 @@
+/* Styles responsives globaux */
+
+/* Tablettes */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .main-content {
+        margin-left: 240px;
+    }
+    
+    .page-container {
+        padding: var(--spacing-lg);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobiles - Tablettes petites */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .page-container {
+        padding: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section {
+        padding: var(--spacing-lg);
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    
+    .chart-filter {
+        align-self: stretch;
+    }
+    
+    .chart-filter-btn {
+        flex: 1;
+    }
+    
+    /* Cacher certains éléments sur mobile */
+    .user-info,
+    .dropdown-icon,
+    .header-tabs {
+        display: none;
+    }
+    
+    /* Ajustements typographie mobile */
+    .dashboard-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .dashboard-subtitle {
+        font-size: var(--font-size-base);
+    }
+    
+    .section-title {
+        font-size: var(--font-size-lg);
+    }
+}
+
+/* Mobiles petits */
+@media (max-width: 480px) {
+    .page-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .section {
+        padding: var(--spacing-md);
+    }
+    
+    .stat-card {
+        padding: var(--spacing-md);
+    }
+    
+    .stat-card-value {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        padding: var(--spacing-md);
+        height: 250px;
+    }
+    
+    .chart-legend {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    /* Ajustements tableaux mobiles */
+    .table-responsive {
+        font-size: var(--font-size-xs);
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .product-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+    
+    .product-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-xs);
+    }
+}
+
+/* Orientation paysage mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .sidebar {
+        width: 280px;
+    }
+    
+    .page-container {
+        padding: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Grands écrans */
+@media (min-width: 1536px) {
+    .page-container {
+        max-width: 1400px;
+        margin: 0px;
+    }
+    
+    .sidebar {
+        width: 300px;
+    }
+    
+    .main-content {
+        /*margin-left: 3px;*/
+    }
+}
+
+/* Mode sombre (optionnel) */
+@media (prefers-color-scheme: light) {
+    :root {
+        --color-background: #0F172A;
+        --color-surface: #1E293B;
+        --color-text: #F1F5F9;
+        --color-text-muted: #94A3B8;
+        --color-border: #334155;
+        --color-gray-50: #1E293B;
+        --color-gray-100: #334155;
+        --color-gray-200: #475569;
+        --color-gray-300: #64748B;
+        --color-gray-400: #94A3B8;
+        --color-gray-500: #CBD5E1;
+        --color-gray-600: #E2E8F0;
+        --color-gray-700: #F1F5F9;
+    }
+}
+
+/* Impression */
+@media print {
+    .sidebar,
+    .page-header,
+    .sidebar-toggle {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+    }
+    
+    .page-container {
+        padding: 0 !important;
+    }
+    
+    .section {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+        break-inside: avoid;
+    }
+}

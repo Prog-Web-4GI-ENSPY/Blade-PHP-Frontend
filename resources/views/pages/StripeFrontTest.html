@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stripe Test Payment</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px;
+      max-width: 500px;
+    }
+    #card-element {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    #payBtn {
+      background: #6772e5;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #payBtn:hover {
+      background: #5469d4;
+    }
+  </style>
+</head>
+<body>
+  <h2>💳 Stripe Payment Simulation</h2>
+  
+  <div id="card-element"></div>
+  <button id="payBtn">Pay $20</button>
+
+  <pre id="result"></pre>
+
+  <script>
+    // 1️⃣ Initialize Stripe with your public key
+    const stripe = Stripe("pk_test_51SSgYdGpZv93LoQ6bhjwKspNSRJLfNWjkKkDKKnQCKATS01M9zme5oUzc9eORHi4K0oeLIFCpBufebIm2gzmT1Hm00R89u97Gs"); // replace with your own publishable key
+
+    const elements = stripe.elements();
+    const card = elements.create("card");
+    card.mount("#card-element");
+
+    document.getElementById("payBtn").addEventListener("click", async () => {
+      document.getElementById("result").textContent = "⏳ Creating payment...";
+
+      // 2️⃣ Ask backend to create PaymentIntent
+      const res = await fetch("http://127.0.0.1:8000/api/payment/create-payment-intent/order/1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: 20,            // $20 in cents
+          currency: "usd",
+          paymentMethod: "card"
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.clientSecret) {
+        document.getElementById("result").textContent = "Failed to create PaymentIntent: " + JSON.stringify(data);
+        return;
+      }
+      console.log(data.clientSecret)
+     
+      const clientSecret = data.clientSecret;
+
+      // 3️⃣ Confirm card payment on frontend
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: { name: "Test User" },
+        },
+      });
+
+      // 4️⃣ Handle result
+      if (result.error) {
+        document.getElementById("result").textContent = "❌ Error: " + result.error.message;
+      } else if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
+        document.getElementById("result").textContent =
+          "✅ Payment succeeded!\nTransaction ID: " + result.paymentIntent.id;
+
+        // 5️⃣ (Optional) Inform backend payment succeeded
+        await fetch("http://127.0.0.1:8000/api/payment/registerPayment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            transactionId: result.paymentIntent.id,
+            paymentId:data.payment.id
+          }),
+        });
+      } else {
+        document.getElementById("result").textContent =
+          "⚠️ Payment not completed: " + result.paymentIntent.status;
+      }
+    });
+  </script>
+</body>
+</html>
