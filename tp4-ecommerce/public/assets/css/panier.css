@@ -43,6 +43,13 @@ main {
     min-height: auto; /* Enlever la hauteur minimale qui cause le problème */
 }
 
+ .cart-content {
+    display: flex;         /* Indispensable pour que le gap fonctionne */
+    flex-direction: row;    /* Place les éléments côte à côte */
+    gap: 30px;              /* C'est ici que vous réglez l'espace entre les colonnes */
+    align-items: flex-start; /* Empêche le résumé de s'étirer verticalement */
+}
+
 /* ========================================
    EN-TÊTE DU PANIER
    ======================================== */
@@ -101,6 +108,8 @@ main {
    ======================================== */
 
 .empty-cart-message {
+    display: flex;
+    flex-direction: row;
     text-align: center;
     padding: 80px 20px;
     background: white;
@@ -145,15 +154,6 @@ main {
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); /* Ombre bleue */
 }
 
-/* ========================================
-   LAYOUT DU CONTENU (DEUX COLONNES)
-   ======================================== */
-
-.cart-content {
-    display: flex;
-    gap: 30px; /* Espace entre les colonnes */
-    align-items: flex-start; /* Alignement en haut */
-}
 
 /* ========================================
    BOUTON VIDER LE PANIER (Nouveau Style)
@@ -161,7 +161,7 @@ main {
 
 .cart-actions-top {
     display: flex;
-    justify-content: flex-end; /* Aligner le bouton à droite */
+    justify-content: flex-start; /* Aligner le bouton à droite */
     margin-bottom: 20px;
 }
 
@@ -587,16 +587,24 @@ main {
         margin-top: 100px;
     }
     
-    /* Empilement vertical sur mobile */
-    .cart-content {
-        flex-direction: column;
-    }
-    
-    /* Le résumé prend toute la largeur */
-    .order-summary {
-        position: static; /* Plus de sticky sur mobile */
-        width: 100%;
-    }
+
+.cart-content {
+    display: flex;         /* Indispensable pour mettre côte à côte */
+    flex-direction: row;    /* Aligne cart-main-column et order-summary */
+    gap: 30px;              /* L'espace magique entre les deux blocs */
+    align-items: flex-start;/* Empêche le résumé de s'étirer bizarrement */
+    width: 100%;
+}
+
+.cart-main-column {
+    flex: 2; /* Prend 2/3 de la largeur */
+}
+
+.order-summary {
+    flex: 1; /* Prend 1/3 de la largeur */
+    position: sticky; /* Pour que le résumé suive au scroll */
+    top: 120px;
+}
     
     /* Articles empilés verticalement sur petit écran */
     .cart-item {

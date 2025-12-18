@@ -46,62 +46,48 @@
       </a>
     </div>
 
-    <div id="cart-content-wrapper" class='cart-content' style="display: none;">
+   <div id="cart-content-wrapper" class="cart-content" style="display: none;">
 
-      <div class="cart-actions-top">
-        <button class="btn-clear-cart" id="clear-cart-button">
-          <i class="fas fa-trash-alt"></i>
-          Vider le panier
-        </button>
-      </div>
-      
-      <div class='cart-items' id="cart-items-container">
+    <div class="cart-main-column">
+        <div class="cart-actions-top">
+            <button class="btn-clear-cart" id="clear-cart-button">
+                <i class="fas fa-trash-alt"></i> Vider le panier
+            </button>
         </div>
+        
+        <div class="cart-items" id="cart-items-container">
+            </div>
+    </div>
 
-      <div class='order-summary'>
-        <h2 class='summary-title'>
-          <i class="fas fa-receipt"></i>
-          Résumé de la commande
+    <aside class="order-summary">
+        <h2 class="summary-title">
+            <i class="fas fa-receipt"></i> Résumé de la commande
         </h2>
 
-        <div class='summary-box'>
-          
-          <div class='summary-row'>
-            <span class='summary-label'>
-              <i class="fas fa-shopping-bag"></i>
-              Sous-total:
-            </span>
-            <span class='summary-value' id="subtotal-value">0.00 XAF</span>
-          </div>
-          
-          <div class='summary-row'>
-            <span class='summary-label'>
-              <i class="fas fa-tag"></i>
-              Réduction:
-            </span>
-            <span class='summary-value discount-value' id="discount-value">-0.00 XAF</span>
-          </div>
+        <div class="summary-box">
+            <div class="summary-row">
+                <span class="summary-label"><i class="fas fa-shopping-bag"></i> Sous-total:</span>
+                <span class="summary-value" id="subtotal-value">0 F CFA</span>
+            </div>
+            
+            <div class="summary-row">
+                <span class="summary-label"><i class="fas fa-tag"></i> Réduction:</span>
+                <span class="summary-value discount-value" id="discount-value">0 F CFA</span>
+            </div>
 
-          <div class='summary-row'>
-            <span class='summary-label'>
-              <i class="fas fa-truck"></i>
-              Livraison:
-            </span>
-            <span class='summary-value' id="shipping-value">Gratuite</span>
-          </div>
-          
-          <div class='summary-row summary-total'>
-            <span class='summary-label'>
-              <i class="fas fa-calculator"></i>
-              Total:
-            </span>
-            <span class='summary-value' id="total-value">XAF0.00</span>
-          </div>
+            <div class="summary-row">
+                <span class="summary-label"><i class="fas fa-truck"></i> Livraison:</span>
+                <span class="summary-value" id="shipping-value">Gratuite</span>
+            </div>
+            
+            <div class="summary-row summary-total">
+                <span class="summary-label"><i class="fas fa-calculator"></i> Total:</span>
+                <span class="summary-value" id="total-value">0 F CFA</span>
+            </div>
         </div>
 
-        <button class='checkout-btn' id="checkout-button">
-          <i class="fas fa-lock"></i>
-          Procéder au paiement
+        <button class="checkout-btn" id="checkout-button">
+            <i class="fas fa-lock"></i> Procéder au paiement
         </button>
 
         <a href="{{ route('casque') }}" class="continue-shopping-link">
@@ -110,16 +96,12 @@
         </a>
 
         <div class="security-badges">
-          <div class="badge">
-            <i class="fas fa-shield-alt"></i>
-            <span>Paiement sécurisé</span>
-          </div>
-          <div class="badge">
-            <i class="fas fa-undo"></i>
-            <span>Retours gratuits</span>
-          </div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> <span>Paiement sécurisé</span></div>
+            <div class="badge"><i class="fas fa-undo"></i> <span>Retours gratuits</span></div>
         </div>
-      </div>
+    </aside>
+
+</div>
 
     </div>
   </main>
