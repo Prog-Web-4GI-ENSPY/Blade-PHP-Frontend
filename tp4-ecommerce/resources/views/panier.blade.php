@@ -124,8 +124,6 @@
     </div>
   </main>
 
-  <script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
-<script type="module" src="{{ asset('assets/js/cart-manager.js') }}"></script>
-  <script src="{{ asset('assets/js/panier.js') }}"></script> 
+
 </body>
 @endsection

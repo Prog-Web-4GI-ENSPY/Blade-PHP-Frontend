@@ -31,6 +31,8 @@
     <script defer src="{{ asset('assets/js/logout.js') }}"></script>
     <script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
     <script defer src="{{ asset('assets/js/blog.js') }}"></script>
+    <script type="module" src="{{ asset('assets/js/cart-manager.js') }}"></script>
+      <script src="{{ asset('assets/js/panier.js') }}"></script> 
 
     @stack('scripts')
 

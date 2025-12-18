@@ -6,10 +6,6 @@
   <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/header.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/footer.css') }}">
-<script src="{{ asset('assets/js/header.js') }}"></script>
-  <script src="{{ asset('assets/js/api-service.js') }}" defer></script>
-  <script src="{{ asset('assets/js/logout.js') }}" defer></script>
-<script defer src="{{ asset('assets/js/newsletter.js') }}"></script>
 
 
   <!-- Utilisation de Font Awesome pour les icônes -->
